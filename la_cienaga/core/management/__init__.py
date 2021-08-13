@@ -98,6 +98,8 @@ class Management(object):
         if subcommand == 'help':
             if not options.args:
                 sys.stdout.write(self.main_help_text() + '\n')
+            else:
+                self.fetch_command(options.args[0]).print_help(self.prog_name, options.args[0])
         else:
             subcmd = self.fetch_command(subcommand)
             if subcmd is not None:

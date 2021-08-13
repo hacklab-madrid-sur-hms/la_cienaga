@@ -49,6 +49,7 @@ class BaseCommand(object):
     def __init__(self):
         self.help = ''
         self._called_from_command_line = False
+        self.plugins_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','..','plugins')
 
     def create_parser(self, prog_name, subcommand, **kwargs):
         """
@@ -104,7 +105,7 @@ class BaseCommand(object):
 
         return output
 
-    def handle(self):
+    def handle(self, *args, **options):
         """
         The actual logic of the command. Subclasses must implement
         this method.
