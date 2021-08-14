@@ -1,7 +1,10 @@
-class Plugin(object):
+import abc
+
+class Plugin(metaclass=abc.ABCMeta):
     """
     La clase Plugin implementa la funcionalidad básica del parseado y de la
     robotización.
     """
+    @abc.abstractmethod
     def parse(self):
-        raise NotImplementedError('subclasses of Plugin must provide a parse() method.')
+        pass
