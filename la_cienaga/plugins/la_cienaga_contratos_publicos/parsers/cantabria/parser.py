@@ -1,7 +1,7 @@
 from la_cienaga.core.abc.parser import Parser
 
 class CantabriaParser(Parser):
-    title = 'Cantabria'
+    title = 'cantabria'
 
     def extract(self):
         pass

@@ -15,6 +15,7 @@ class Plugin(object):
         self._parsers = []
         self._config = None
         self._parser_path = None
+        self._data_path = None
         self._plugin_name = None
 
     @property
@@ -36,6 +37,14 @@ class Plugin(object):
     @parser_path.setter
     def parser_path(self, value):
         self._parser_path = value
+
+    @property
+    def data_path(self):
+        return self._data_path
+
+    @data_path.setter
+    def data_path(self, value):
+        self._data_path = value
 
     @property
     def plugin_name(self):

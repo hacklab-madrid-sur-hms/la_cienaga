@@ -39,6 +39,9 @@ class Command(BaseCommand):
             # cargamos los parsers
             plugin_obj.parser_path = parser_dir
             plugin_obj.load_parsers()
+            # cargamos dir de datos del plugin
+            data_path = os.path.join(plugin_path, plugin_obj.config['data_dir'])
+            plugin_obj.data_path = data_path
             logger.info('Parseando Plugin: %s' % plugin_obj.config['title'])
             # parseamos
             plugin_obj.parse()

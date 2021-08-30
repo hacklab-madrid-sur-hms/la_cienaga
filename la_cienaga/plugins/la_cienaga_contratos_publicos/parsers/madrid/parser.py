@@ -1,7 +1,7 @@
 from la_cienaga.core.abc.parser import Parser
 
 class MadridParser(Parser):
-    title = 'Madrid'
+    title = 'madrid'
 
     def extract(self):
         pass
