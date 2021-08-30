@@ -34,6 +34,7 @@ class Command(BaseCommand):
                 plugin_obj.load_config(os.path.join(plugin_path, 'config.yml'))
             if os.path.isdir(os.path.join(plugin_path, 'config')) and os.path.isfile(os.path.join(plugin_path, 'config', 'config.yml')):
                 plugin_obj.load_config(os.path.join(plugin_path, 'config', 'config.yml'))
+            plugin_obj.check_config()
             parser_dir = os.path.join(plugin_path,plugin_obj.config['parser_dir'])
             # cargamos los parsers
             plugin_obj.parser_path = parser_dir

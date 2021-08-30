@@ -1,4 +1,9 @@
 {
   'title': 'infoelectorales',
-  'parser_dir': 'parsers'
+  'parser_dir': 'parsers',
+  'migrations_dir': '',
+  'urls': {
+
+   },
+  'connection_url': ''
 }

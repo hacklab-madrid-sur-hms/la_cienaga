@@ -49,8 +49,22 @@ class Plugin(object):
         """
         Carga la configuración a partir del path que se ha pasado como parámetro.
         """
+        self._config_path = path
         with open(path, 'r') as f:
             self._config = yaml.load(f, Loader=yaml.SafeLoader)
+
+    def check_config(self):
+        error_msg = 'La clave obligatoria %s no está en el fichero de configuración %s'
+        if not 'title' in self._config:
+            raise ValueError(error_msg % ('title', self._config_path))
+        if not 'parser_dir' in self._config:
+            raise ValueError(error_msg % ('parser_dir', self._config_path))
+        if not 'migrations_dir' in self._config:
+            raise ValueError(error_msg % ('migrations_dir', self._config_path))
+        if not 'urls' in self._config:
+            raise ValueError(error_msg % ('urls', self._config_path))
+        if not 'connection_url' in self._config:
+            raise ValueError(error_msg % ('connection_url', self._config_path))
 
     def load_parsers(self):
         """
