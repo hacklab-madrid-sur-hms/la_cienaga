@@ -1,5 +1,5 @@
 from la_cienaga import logger
-from la_cienaga.core.plugin import Plugin
+from la_cienaga.core.abc.plugin import Plugin
 
 class InfoelectoralesPlugin(Plugin):
     def parse(self):

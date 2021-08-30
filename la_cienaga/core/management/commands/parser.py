@@ -1,7 +1,8 @@
 import pkgutil
 import inspect
+import os
 from la_cienaga import logger
-from la_cienaga.core.plugin import Plugin
+from la_cienaga.core.abc.plugin import Plugin
 from importlib import import_module
 from la_cienaga.core.management.base import BaseCommand
 
@@ -25,7 +26,14 @@ class Command(BaseCommand):
 
         for plugin in plugins_list:
             logger.info(f'Parseando Plugin: {plugin}')
-            plugin_obj = self._load_plugin_class(plugin).parse()
+            plugin_obj = self._load_plugin_class(plugin)
+            plugin_path = os.path.dirname(inspect.getfile(plugin_obj.__class__))
+            if os.path.isfile(os.path.join(plugin_path, 'config.yml')):
+                plugin_obj.load_config(os.path.join(plugin_path, 'config.yml'))
+            if os.path.isdir(os.path.join(plugin_path, 'config')) and os.path.isfile(os.path.join(plugin_path, 'config', 'config.yml')):
+                plugin_obj.load_config(os.path.join(plugin_path, 'config', 'config.yml'))
+            plugin_obj.parse()
+
 
     def _load_plugin_class(self, name):
         subclasses = []
