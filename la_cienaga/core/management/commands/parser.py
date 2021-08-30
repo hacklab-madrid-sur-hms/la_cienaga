@@ -25,13 +25,21 @@ class Command(BaseCommand):
             if is_pkg and not name.startswith('_')]
 
         for plugin in plugins_list:
-            logger.info(f'Parseando Plugin: {plugin}')
+            # instanciamos el plugin
             plugin_obj = self._load_plugin_class(plugin)
+            plugin_obj.plugin_name = plugin
             plugin_path = os.path.dirname(inspect.getfile(plugin_obj.__class__))
+            # cargamos la config del plugin
             if os.path.isfile(os.path.join(plugin_path, 'config.yml')):
                 plugin_obj.load_config(os.path.join(plugin_path, 'config.yml'))
             if os.path.isdir(os.path.join(plugin_path, 'config')) and os.path.isfile(os.path.join(plugin_path, 'config', 'config.yml')):
                 plugin_obj.load_config(os.path.join(plugin_path, 'config', 'config.yml'))
+            parser_dir = os.path.join(plugin_path,plugin_obj.config['parser_dir'])
+            # cargamos los parsers
+            plugin_obj.parser_path = parser_dir
+            plugin_obj.load_parsers()
+            logger.info('Parseando Plugin: %s' % plugin_obj.config['title'])
+            # parseamos
             plugin_obj.parse()
 
 

@@ -1,3 +1,4 @@
 {
-  'title': 'infoelectorales'
+  'title': 'infoelectorales',
+  'parser_dir': 'parsers'
 }

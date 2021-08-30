@@ -1,3 +1,4 @@
 {
-  'title': 'contratos_publicos'
+  'title': 'contratos_publicos',
+  'parser_dir': 'parsers'
 }

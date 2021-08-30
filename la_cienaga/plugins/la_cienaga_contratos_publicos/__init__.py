@@ -5,6 +5,4 @@ from la_cienaga.plugins.la_cienaga_contratos_publicos.parsers.cantabria.parser i
 
 class ContratosPublicosPlugin(Plugin):
     def __init__(self):
-        madrid_parser = MadridParser()
-        cantabria_parser = CantabriaParser()
-        self.parsers = [madrid_parser, cantabria_parser]
+        pass

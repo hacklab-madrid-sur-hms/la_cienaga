@@ -1,5 +1,9 @@
 import os
 import yaml
+import pkgutil
+import importlib
+import inspect
+import sys
 
 class Plugin(object):
     """
@@ -10,6 +14,8 @@ class Plugin(object):
     def __init__(self):
         self._parsers = []
         self._config = None
+        self._parser_path = None
+        self._plugin_name = None
 
     @property
     def parsers(self):
@@ -23,11 +29,52 @@ class Plugin(object):
     def config(self):
         return self._config
 
+    @property
+    def parser_path(self):
+        return self._parser_path
+
+    @parser_path.setter
+    def parser_path(self, value):
+        self._parser_path = value
+
+    @property
+    def plugin_name(self):
+        return self._plugin_name
+
+    @plugin_name.setter
+    def plugin_name(self, value):
+        self._plugin_name = value
+
     def load_config(self,path):
+        """
+        Carga la configuración a partir del path que se ha pasado como parámetro.
+        """
         with open(path, 'r') as f:
             self._config = yaml.load(f, Loader=yaml.SafeLoader)
 
+    def load_parsers(self):
+        """
+        Genera la lista de parsers de los plugins y la puebla con instancias de los mismos.
+        Considerará un parser todo aquel fichero fuente que contenga la subcadena 'parser' en el nombre del fichero.
+        """
+        parsers = []
+        modulepath = 'la_cienaga.plugins.%s.%s' % (self._plugin_name, self._config['parser_dir'])
+        packages = [name for _,name,is_pkg in pkgutil.walk_packages([self._parser_path]) if is_pkg]
+        for package in packages:
+            modules = [name for _,name,is_pkg in pkgutil.iter_modules([os.path.join(self.parser_path, package)]) if not is_pkg]
+            for module in modules:
+                if 'parser' in module:
+                    classpath = '.'.join([modulepath, package, module])
+                    imported_module = importlib.import_module(classpath)
+                    classname = [name for name, obj in inspect.getmembers(imported_module, inspect.isclass)][0]
+                    klass = getattr(imported_module, classname)
+                    parsers.append(klass())
+        self._parsers = parsers
+
     def parse(self):
+        """
+        A partir de la lista de parsers, ejecuta el parseado llamando al método parse() de cada parser.
+        """
         if self.parsers:
             for parser in self.parsers:
                 parser.parse()
