@@ -63,11 +63,16 @@ class Plugin(object):
             self._config = yaml.load(f, Loader=yaml.SafeLoader)
 
     def check_config(self):
+        """
+        Comprueba que las claves obligatorias existen en el fichero de configuración del plugin
+        """
         error_msg = 'La clave obligatoria %s no está en el fichero de configuración %s'
         if not 'title' in self._config:
             raise ValueError(error_msg % ('title', self._config_path))
         if not 'parser_dir' in self._config:
             raise ValueError(error_msg % ('parser_dir', self._config_path))
+        if not 'data_dir' in self._config:
+            raise ValueError(error_msg % ('data_dir', self._config_path))
         if not 'migrations_dir' in self._config:
             raise ValueError(error_msg % ('migrations_dir', self._config_path))
         if not 'urls' in self._config:
@@ -91,7 +96,9 @@ class Plugin(object):
                     imported_module = importlib.import_module(classpath)
                     classname = [name for name, obj in inspect.getmembers(imported_module, inspect.isclass)][0]
                     klass = getattr(imported_module, classname)
-                    parsers.append(klass())
+                    instance = klass()
+                    instance.config = self._config
+                    parsers.append(instance)
         self._parsers = parsers
 
     def parse(self):
@@ -100,6 +107,6 @@ class Plugin(object):
         """
         if self.parsers:
             for parser in self.parsers:
-                parser.parse()
+                parser.parse(self._data_path)
         else:
             raise ValueError('No se ha instanciado el atributo parsers')

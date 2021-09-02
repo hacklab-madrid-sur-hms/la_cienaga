@@ -1,4 +1,5 @@
 import abc
+import os
 from la_cienaga import logger
 
 class Parser(metaclass=abc.ABCMeta):
@@ -14,6 +15,20 @@ class Parser(metaclass=abc.ABCMeta):
     def load(self, transformed):
         pass
 
-    def parse(self):
+    @property
+    def config(self):
+        return self._config
+
+    @config.setter
+    def config(self, value):
+        self._config = value
+
+    def remove_dir_content(self, path):
+        for filename in os.listdir(path):
+            filepath = os.path.join(path, filename)
+            if os.path.isfile(filepath) or os.path.islink(filepath):
+                os.unlink(filepath)
+
+    def parse(self, data_path):
         logger.info('Ejecutando parser: %s' % self.title)
-        self.load(self.transform(self.extract()))
+        self.load(self.transform(self.extract(data_path)))
