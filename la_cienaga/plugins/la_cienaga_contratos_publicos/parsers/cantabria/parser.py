@@ -3,6 +3,7 @@ import time
 import calendar
 import requests
 import datetime
+import json
 
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
@@ -35,21 +36,36 @@ class CantabriaParser(Parser):
         session.mount('http://', HTTPAdapter(max_retries=retries))
         session.mount('https://', HTTPAdapter(max_retries=retries))
         # Cargamos la plantilla de url
-        template = Template(self._config['urls'][self.title]['contratos_publicos'])
+        template_contratos = Template(self._config['urls'][self.title]['contratos_publicos'])
+        template_convenios = Template(self._config['urls'][self.title]['convenios'])
+        template_conciertos = Template(self._config['urls'][self.title]['conciertos'])
+        template_encomiendas = Template(self._config['urls'][self.title]['encomiendas_gestion'])
+        template_encargos = Template(self._config['urls'][self.title]['encargos_medio_propio'])
         current_date = datetime.datetime.now()
         start_date = datetime.datetime(2015,1,1)
         # Iteramos sobre todos los días desde el 15-01-01 al día actual y descargamos sus contratos
-
         for c_date in rrule(freq=DAILY, dtstart=start_date, until=current_date):
             c_date_str = c_date.strftime('%Y-%m-%d')
-            url = template.substitute(fecha_inicio=c_date_str, fecha_fin=c_date_str)
-            logger.info('Descargando datos del día %s' % c_date_str)
-            if not self.is_downloaded(c_date):
-                self._download(url, data_path, session=session)
-                time.sleep(10)
-
-    def is_downloaded(self,date):
-        return  False
+            url_contratos = template_contratos.substitute(fecha_inicio=c_date_str, fecha_fin=c_date_str)
+            url_convenios = template_convenios.substitute(fecha_inicio=c_date_str, fecha_fin=c_date_str)
+            url_conciertos = template_conciertos.substitute(fecha_inicio=c_date_str, fecha_fin=c_date_str)
+            url_encomiendas = template_encomiendas.substitute(fecha_inicio=c_date_str, fecha_fin=c_date_str)
+            url_encargos = template_encargos.substitute(fecha_inicio=c_date_str, fecha_fin=c_date_str)
+            logger.info('Descargando contratos públicos para el día %s' % c_date_str)
+            self._download(url_contratos, data_path, session=session)
+            time.sleep(self._config['delay'])
+            logger.info('Descargando convenios para el día %s' % c_date_str)
+            self._download(url_convenios, data_path, session=session)
+            time.sleep(self._config['delay'])
+            logger.info('Descargando conciertos para el día %s' % c_date_str)
+            self._download(url_conciertos, data_path, session=session)
+            time.sleep(self._config['delay'])
+            logger.info('Descargando encomiendas de gestión para el día %s' % c_date_str)
+            self._download(url_encomiendas, data_path, session=session)
+            time.sleep(self._config['delay'])
+            logger.info('Descargando encargos de medios propios para el día %s' % c_date_str)
+            self._download(url_encargos, data_path, session=session)
+            time.sleep(self._config['delay'])
 
     def _download(self, url, data_path, session=None):
         if session:
@@ -65,3 +81,4 @@ class CantabriaParser(Parser):
                 f.write(r.content)
         else:
             logger.warn('No ha sido posible encontrar contratos')
+
