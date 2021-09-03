@@ -1,0 +1,10 @@
+{
+  'title': 'subvenciones',
+  'parser_dir': 'parsers',
+  'data_dir': 'data',
+  'migrations_dir': '',
+  'urls': {
+    },
+  },
+  'connection_url': '',
+}
