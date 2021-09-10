@@ -1,8 +1,11 @@
 from la_cienaga import logger
 from la_cienaga.core.abc.plugin import Plugin
-from la_cienaga.plugins.la_cienaga_contratos_publicos.parsers.madrid.parser import MadridParser
-from la_cienaga.plugins.la_cienaga_contratos_publicos.parsers.cantabria.parser import CantabriaParser
 
-class ContratosPublicosPlugin(Plugin):
-    def __init__(self):
+class SubvencionesPlugin(Plugin):
+    def parse(self):
+        """
+        Método que implementa el parseo del plugin.
+        En este caso, es un plugin compuesto por lo que llamará a cada uno
+        de los parsers de cada uno de los subplugins (madrid, cantabria, galicia, ...).
+        """
         pass

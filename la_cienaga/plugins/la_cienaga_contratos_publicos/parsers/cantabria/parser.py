@@ -16,14 +16,23 @@ class CantabriaParser(Parser):
     title = 'cantabria'
 
     def extract(self, data_path):
-        self._extract_files(data_path)
+        self._parse_and_save(data_path)
     def transform(self, extracted):
         pass
     def load(self, transformed):
         pass
 
+    def _parse_and_save(self, data_path):
+        """
+        Nuevo código basado en el parseo de la web
+        """
+        pass
+
     def _extract_files(self, data_path):
         """
+        FIXME: Antiguo código basado en la descarga de CSV.
+        Los CSV se forman mal en algunos casos, mucho más seguro parsear.
+
         A partir de la url de descarga que autogenera el csv, descargamos un csv de contratos públicos
         desde el 01/01/2015 por día para, después, juntarlo y generar los objetos que se pasaran al proceso de
         transformación
