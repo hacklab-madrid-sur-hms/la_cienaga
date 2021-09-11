@@ -24,10 +24,11 @@ class Parser(metaclass=abc.ABCMeta):
         self._config = value
 
     def remove_dir_content(self, path):
-        for filename in os.listdir(path):
-            filepath = os.path.join(path, filename)
-            if os.path.isfile(filepath) or os.path.islink(filepath):
-                os.unlink(filepath)
+        if os.path.exists(path):
+            for filename in os.listdir(path):
+                filepath = os.path.join(path, filename)
+                if os.path.isfile(filepath) or os.path.islink(filepath):
+                    os.unlink(filepath)
 
     def parse(self, data_path):
         logger.info('Ejecutando parser: %s' % self.title)
