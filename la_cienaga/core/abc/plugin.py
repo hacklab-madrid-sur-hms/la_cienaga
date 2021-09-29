@@ -73,8 +73,6 @@ class Plugin(object):
             raise ValueError(error_msg % ('parser_dir', self._config_path))
         if not 'data_dir' in self._config:
             raise ValueError(error_msg % ('data_dir', self._config_path))
-        if not 'migrations_dir' in self._config:
-            raise ValueError(error_msg % ('migrations_dir', self._config_path))
         if not 'urls' in self._config:
             raise ValueError(error_msg % ('urls', self._config_path))
         if not 'connection_url' in self._config:

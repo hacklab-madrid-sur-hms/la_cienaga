@@ -1,6 +1,8 @@
 import abc
 import os
 from la_cienaga import logger
+from scrapy.crawler import CrawlerProcess
+from scrapy.settings import Settings
 
 class Parser(metaclass=abc.ABCMeta):
     title = ''
@@ -33,3 +35,13 @@ class Parser(metaclass=abc.ABCMeta):
     def parse(self, data_path):
         logger.info('Ejecutando parser: %s' % self.title)
         self.load(self.transform(self.extract(data_path)))
+    
+    def run_spiders(self):
+        """
+        Inicia la ejecución de los crawlers
+        """
+        process = CrawlerProcess(Settings())
+        for crawler in self._crawlers:
+            process.crawl(crawler, config=self._config)
+        process.start()
+
