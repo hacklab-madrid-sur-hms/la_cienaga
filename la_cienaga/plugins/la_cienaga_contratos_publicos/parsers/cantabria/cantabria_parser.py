@@ -14,7 +14,7 @@ class CantabriaParser(Parser):
 
     def extract(self, data_path):
         pass
-    def transform(self, extracted):
+    def transform(self):
         pass
-    def load(self, transformed):
+    def load(self):
         pass

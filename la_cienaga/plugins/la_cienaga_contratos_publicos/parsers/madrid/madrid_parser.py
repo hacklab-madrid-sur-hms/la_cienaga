@@ -7,9 +7,9 @@ class MadridParser(Parser):
 
     def extract(self, data_path):
         self._extract_files(data_path)
-    def transform(self, extracted):
+    def transform(self):
         pass
-    def load(self, transformed):
+    def load(self):
         pass
 
     def _extract_files(self, data_path):

@@ -3,18 +3,19 @@ import os
 from la_cienaga import logger
 from scrapy.crawler import CrawlerProcess
 from scrapy.settings import Settings
+from scrapy.utils.project import get_project_settings
 
 class Parser(metaclass=abc.ABCMeta):
     title = ''
 
     @abc.abstractmethod
-    def extract(self):
+    def extract(self, data_path):
         pass
     @abc.abstractmethod
-    def transform(self, extracted):
+    def transform(self):
         pass
     @abc.abstractmethod
-    def load(self, transformed):
+    def load(self):
         pass
 
     @property
@@ -34,13 +35,20 @@ class Parser(metaclass=abc.ABCMeta):
 
     def parse(self, data_path):
         logger.info('Ejecutando parser: %s' % self.title)
-        self.load(self.transform(self.extract(data_path)))
+        # extrae los datos y los persiste en un repo en bruto
+        self.extract(data_path)
+        # obtiene los datos del repo en bruto y hace las transformaciones adecuadas
+        self.transform()
+        # obtiene los datos transformados del repo en bruto y los persiste en el repo
+        self.load() # los c
     
     def run_spiders(self):
         """
         Inicia la ejecución de los crawlers
         """
-        process = CrawlerProcess(Settings())
+        settings = Settings()
+        process = CrawlerProcess(settings)
+        logger.getLogger('scrapy').setLevel(logger.INFO)
         for crawler in self._crawlers:
             process.crawl(crawler, config=self._config)
         process.start()
