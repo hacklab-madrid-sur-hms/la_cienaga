@@ -1,0 +1,3 @@
+{
+  'mongo_connection': "mongodb://root:toor@localhost:27017/"
+}

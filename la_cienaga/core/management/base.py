@@ -50,6 +50,7 @@ class BaseCommand(object):
         self.help = ''
         self._called_from_command_line = False
         self.plugins_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','..','plugins')
+        self.settings_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..')
 
     def create_parser(self, prog_name, subcommand, **kwargs):
         """

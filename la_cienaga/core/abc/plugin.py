@@ -54,13 +54,19 @@ class Plugin(object):
     def plugin_name(self, value):
         self._plugin_name = value
 
-    def load_config(self,path):
+    def load_config(self,settings_path, config_path):
         """
-        Carga la configuración a partir del path que se ha pasado como parámetro.
+        Carga la configuración a partir de los path de config generales y particulares de cada plugin.
         """
-        self._config_path = path
-        with open(path, 'r') as f:
-            self._config = yaml.load(f, Loader=yaml.SafeLoader)
+        self._config_path = config_path
+        with open(config_path, 'r') as f:
+            config = yaml.load(f, Loader=yaml.SafeLoader)
+        with open(settings_path, 'r') as f:
+            settings = yaml.load(f, Loader=yaml.SafeLoader)
+
+        settings.update(config)
+
+        self._config = settings
 
     def check_config(self):
         """
@@ -75,8 +81,8 @@ class Plugin(object):
             raise ValueError(error_msg % ('data_dir', self._config_path))
         if not 'urls' in self._config:
             raise ValueError(error_msg % ('urls', self._config_path))
-        if not 'connection_url' in self._config:
-            raise ValueError(error_msg % ('connection_url', self._config_path))
+        if not 'mongo_connection' in self._config:
+            raise ValueError(error_msg % ('mongo_connection', self._config_path))
 
     def load_parsers(self):
         """
