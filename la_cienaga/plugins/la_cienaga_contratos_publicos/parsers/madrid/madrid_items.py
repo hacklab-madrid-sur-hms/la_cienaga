@@ -1,6 +1,7 @@
 from scrapy.item import Field, Item
 
 class MadridItem(Item):
+    ccaa = Field()
     titulo = Field()
     fecha_convocatoria = Field()
     estado = Field()
