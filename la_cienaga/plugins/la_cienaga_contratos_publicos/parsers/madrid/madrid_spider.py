@@ -74,7 +74,8 @@ class MadridSpider(Spider):
         madrid_fields = {}
         url = response.request.url
         madrid_fields['url'] = url
-        madrid_fields['ccaa'] = 'Comunidad de Madrid'
+        madrid_fields['nombre_administracion'] = 'Comunidad de Madrid'
+        madrid_fields['tipo_administracion'] = 'Comunidad Autónoma'
         titulo = unicodedata.normalize('NFKD', response.xpath("//div[@id='titulo_cabecera']/h2[@class='tit11gr3']/text()").get().strip())
         madrid_fields['titulo'] = titulo
         fecha_convocatoria_raw = response.xpath("//div[@id='titulo_cabecera']/div[@class='txt08gr3c']/text()").get()

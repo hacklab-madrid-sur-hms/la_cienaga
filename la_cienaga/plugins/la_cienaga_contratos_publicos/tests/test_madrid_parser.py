@@ -40,11 +40,12 @@ def test_2788420(load_2788420_response, load_madrid_spider):
 
 def test_4118600(load_4118600_response, load_madrid_spider):
     item = list(load_madrid_spider.parse_contract(load_4118600_response))[0]
-    assert len(item) == 25 # Son 25 campos a obtener en este contrato
+    assert len(item) == 26 # Son 25 campos a obtener en este contrato
     ## Detalle del contrato ##
     ## Principales
     assert item['titulo'] == 'Suministro de cementos óseos y accesorios para cementación, biomateriales y diverso fungible para el servicio de traumatología del Hospital Universitario de Fuenlabrada'
-    assert item['ccaa'] == 'Comunidad de Madrid'
+    assert item['nombre_administracion'] == 'Comunidad de Madrid'
+    assert item['tipo_administracion'] == 'Comunidad Autónoma'
     assert item['fecha_convocatoria'] == 'Convocatoria publicada el 26 mayo 2021 12:30'
     assert item['estado'] == 'En tramitación'
     assert item['fecha_fin_presentacion'] == 'Fin:29 junio 2021'
