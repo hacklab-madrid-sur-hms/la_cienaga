@@ -1,3 +1,5 @@
+from la_cienaga import settings
+from la_cienaga.core.config import Config
 import os
 import yaml
 import pkgutil
@@ -54,19 +56,17 @@ class Plugin(object):
     def plugin_name(self, value):
         self._plugin_name = value
 
-    def load_config(self,settings_path, config_path):
+    def load_config(self,config_path):
         """
         Carga la configuración a partir de los path de config generales y particulares de cada plugin.
         """
+        gen_settings = dict(settings)
         self._config_path = config_path
-        with open(config_path, 'r') as f:
-            config = yaml.load(f, Loader=yaml.SafeLoader)
-        with open(settings_path, 'r') as f:
-            settings = yaml.load(f, Loader=yaml.SafeLoader)
+        config = Config(settings_path=config_path)
 
-        settings.update(config)
+        gen_settings.update(config)
 
-        self._config = settings
+        self._config = gen_settings
 
     def check_config(self):
         """

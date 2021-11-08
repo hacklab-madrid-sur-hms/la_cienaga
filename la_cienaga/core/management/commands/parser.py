@@ -30,10 +30,10 @@ class Command(BaseCommand):
             plugin_obj.plugin_name = plugin
             plugin_path = os.path.dirname(inspect.getfile(plugin_obj.__class__))
             # cargamos la config
-            if os.path.isfile(os.path.join(self.settings_dir, 'settings.yml')) and os.path.isfile(os.path.join(plugin_path, 'config.yml')):
-                plugin_obj.load_config(os.path.join(self.settings_dir, 'settings.yml'), os.path.join(plugin_path, 'config.yml'))
-            if os.path.isfile(os.path.join(self.settings_dir, 'settings.yml')) and os.path.isdir(os.path.join(plugin_path, 'config')) and os.path.isfile(os.path.join(plugin_path, 'config', 'config.yml')):
-                plugin_obj.load_config(os.path.join(self.settings_dir, 'settings.yml'), os.path.join(plugin_path, 'config', 'config.yml'))
+            if os.path.isfile(os.path.join(plugin_path, 'config.yml')):
+                plugin_obj.load_config(os.path.join(plugin_path, 'config.yml'))
+            if os.path.isdir(os.path.join(plugin_path, 'config')) and os.path.isfile(os.path.join(plugin_path, 'config', 'config.yml')):
+                plugin_obj.load_config(os.path.join(plugin_path, 'config', 'config.yml'))
             plugin_obj.check_config()
             parser_dir = os.path.join(plugin_path,plugin_obj.config['parser_dir'])
             # cargamos los parsers
