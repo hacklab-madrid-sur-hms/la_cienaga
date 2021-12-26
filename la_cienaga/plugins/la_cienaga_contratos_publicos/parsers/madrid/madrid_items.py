@@ -30,7 +30,6 @@ class MadridItem(Item):
     fecha_comunicacion_previa_a_la_comision_europea_al_b_o_e_y_al_b_o_c_m = Field()
     tipo_resolucion = Field()
     fecha_limite_de_presentacion_de_ofertas_o_solicitudes_de_participacion = Field()
-    fecha_publicacion_de_la_licitacion_en_el_BOCM = Field()
     puntos_de_informacion = Field()
     empresarios_excluidos_publicados_el = Field()
     defectos_u_omisiones_de_la_documentacion_publicados_el = Field()
